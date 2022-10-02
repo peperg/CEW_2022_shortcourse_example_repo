@@ -108,17 +108,24 @@ And now we can make a nice temporal trend figure for each treatment
 ```{r}
 
 
-combined_data %>% 
+final_plot <- combined_data %>% 
   ggplot() +
   facet_wrap(~treatment) +
   geom_point(aes(x = date, y = parameter_a_mg_l)) +
   theme_bw()
   
-  
+final_plot
 
 ```
 
 
+# Save the plot
+
+```{r}
+
+ggsave(here("figures", "example_plot.pdf"), final_plot, width = 190, height = 160, units = "mm")
+
+```
 
 
 
