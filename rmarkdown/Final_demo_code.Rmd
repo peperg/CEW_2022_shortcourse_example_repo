@@ -1,0 +1,131 @@
+---
+title: "Final demo code for CEW R shortcourse"
+author: "Pepe Rodriguez"
+date: "2022-10-02"
+output: 
+ html_document:
+  keep_md: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Required packages
+
+```{r}
+
+library(tidyverse)  # Obviously!
+
+library(here) # Helps with filepaths
+
+library(lubridate) # asistance with dates
+
+library(janitor) # helps cleaning variable names
+
+```
+
+# Loading the data
+
+Letas load, one by one, the different data pieces that make our dataset
+
+First we start with the site log
+
+```{r}
+
+site_log_original <- read_csv(here("data_raw", "site_log.csv"))
+
+site_log_original
+
+```
+
+Now we read rge sample log
+
+```{r}
+
+sample_log_original <- read_csv(here("data_raw", "sample_log.csv"))
+
+sample_log_original
+
+```
+
+And now, the analytical results
+
+```{r}
+
+analytical_results_original <- read_csv(here("data_raw", "analytical_results.csv"))
+
+analytical_results_original
+
+```
+
+# Data processing
+
+Now we perform any data processing that we consider necesary
+
+Lets start with the sample log:
+
+```{r}
+
+sample_log <- sample_log_original %>% 
+  mutate(date = (str_c(year, month, day, sep = "/"))) %>% 
+  mutate(date = ymd(date))
+
+sample_log
+
+```
+
+The variable name sin the analytical data do not follow the [Tidyvers style guide](https://style.tidyverse.org/index.html), so we are going to use the function `clean_names()` from the **{Lubridate}** package to help us
+
+```{r}
+
+analytical_results <- analytical_results_original %>% 
+  clean_names()
+
+analytical_results
+
+```
+
+
+# Combine all the data
+
+```{r}
+
+combined_data <- sample_log %>% 
+  left_join(site_log_original) %>% 
+  left_join(analytical_results)
+
+combined_data
+
+```
+
+
+# Plot
+
+And now we can make a nice temporal trend figure for each treatment
+
+
+```{r}
+
+
+combined_data %>% 
+  ggplot() +
+  facet_wrap(~treatment) +
+  geom_point(aes(x = date, y = parameter_a_mg_l)) +
+  theme_bw()
+  
+  
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
