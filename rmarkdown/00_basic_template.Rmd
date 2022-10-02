@@ -1,0 +1,46 @@
+---
+title: "title"
+author: "Jose Luis Rodriguez Gil"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 2
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    theme: cosmo
+    highlight: tango
+    number_sections: true
+    keep_md: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Loading the packages and formating
+
+```{r packages, include=FALSE}
+
+library(tidyverse)
+library(janitor)
+library(here)
+library(lubridate) 
+library(viridis)
+library(scales)
+
+
+```
+
+
+```{r load_my_theme, include=FALSE}
+
+source(here("functions", "theme_pepe_full.R"))
+
+theme_set(theme_pepe_full())  #Sets the theme for all ggplot plots in this .Rmd file (no need to call it in the plot itself)
+
+```
+
+# Loading the data
+
